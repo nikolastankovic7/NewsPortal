@@ -1,80 +1,91 @@
-<!-- GETTING STARTED -->
-## Getting Started
+<h1 align="center">Phone-Ticket Help</h1>
+# Supporting Compose Markdown View
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+Compose Markdown View is an independent project with ongoing development and support made possible thanks to your donations.
+- [Become a backer](https://www.paypal.me/mukeshsolanki)
 
-### Prerequisites
+## Getting started
+Its really simple to integrate *Markdown* in android. All you need to do make the following change to you build gradle under the app module.
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+Step 1. Add the JitPack repository to your build file. Add it in your root build.gradle at the end of repositories:
 
-### Installation
+```kotlin
+allprojects {
+  repositories {
+    ...
+    maven { url "https://jitpack.io" }
+  }
+}
+```
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+Step 2. Add the dependency
+```kotlin
+dependencies {
+    implementation 'com.github.mukeshsolanki:MarkdownView-Android:2.0.0'
+}
+```
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+## How to use Markdown
+Its fairly simple and straight forward to use *Markdown* in you application.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+- Using Compose
 
+Just use `MarkDown` composable where you need to display the view like
+```kotlin
+MarkDown(
+    url = URL("https://raw.githubusercontent.com/mukeshsolanki/MarkdownView-Android/main/README.md"),
+    modifier = Modifier.fillMaxSize()
+)
+```
 
+- Using Older View System (aka XML)
 
-<!-- USAGE EXAMPLES -->
-## Usage
+Add a compose view in your xml file like
+```XML
+<androidx.compose.ui.platform.ComposeView
+    android:id="@+id/markdown"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+```
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+and reference it in your activity/fragment and assign the markdown text/file like wise.
+```kotlin
+val markdown = findViewById(R.id.markdown)
+markdown.composeView.apply {
+    // Dispose of the Composition when the view's LifecycleOwner is destroyed
+    setViewCompositionStrategy(DisposeOnViewTreeLifecycleDestroyed)
+    setContent {
+       // In Compose world
+       MaterialTheme {
+            MarkDown(
+                url = URL("https://raw.githubusercontent.com/mukeshsolanki/MarkdownView-Android/main/README.md"),
+                modifier = Modifier.fillMaxSize()
+            )
+       }
+    }
+}
+```
+## Markdown Sources
+You have 3 different sources from where markdown data can be read
+- `Text` - You can pass the content and string to render the markdown
+```kotlin
+MarkDown(
+    text = "# Test Markdown",
+    modifier = Modifier.fillMaxSize()
+)
+```
+- `File` - You can read from a file and display the markdown data.
+```kotlin
+MarkDown(
+    file = file,
+    modifier = Modifier.fillMaxSize()
+)
+```
+- `URL` - You can also specify the url of the markdown file.
+```kotlin
+MarkDown(
+    url = URL("https://raw.githubusercontent.com/mukeshsolanki/MarkdownView-Android/main/README.md"),
+    modifier = Modifier.fillMaxSize()
+)
+```
 
